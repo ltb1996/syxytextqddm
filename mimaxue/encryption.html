@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        .nav-bar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #f8f9fa;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+        
+        .nav-content .title {
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .nav-content .logo {
+            height: 40px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            padding-top: 80px;
+            overflow-y: scroll;
+        }
+
+        .card {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .input-group label {
+            width: 120px;
+            text-align: right;
+            color: #666;
+            margin-right: 10px;
+        }
+
+        .input-group input, .input-group select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .result {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+            cursor: pointer;
+            word-break: break-all;
+            min-height: 20px;
+        }
+
+        button {
+            display: block;
+            margin: 15px auto;
+            padding: 8px 16px;
+            background: #f3f3f3;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e6e6e6;
+        }
+
+        .error {
+            color: #d03050;
+            margin-top: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-bar">
+        <div class="nav-content">
+            <div class="title">三亚学院盛宝金融科技商学院-------区块链工程-------IT-tools</div>
+            <img src="../images/logo3.png" alt="SAXO FINTECH" class="logo">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="header">
+            <h1>Encrypt</h1>
+        </div>
+        <div class="input-group">
+            <div class="input-row">
+                <label>输入文本：</label>
+                <input type="text" id="cypherInput" value="Lorem ipsum dolor sit amet" placeholder="The string to cypher">
+            </div>
+            <div class="input-row">
+                <label>密钥：</label>
+                <input type="text" id="cypherSecret" value="my secret key" placeholder="Your secret key">
+            </div>
+            <div class="input-row">
+                <label>加密算法：</label>
+                <select id="cypherAlgo">
+                    <option value="AES">AES</option>
+                    <option value="TripleDES">TripleDES</option>
+                    <option value="Rabbit">Rabbit</option>
+                    <option value="RC4">RC4</option>
+                </select>
+            </div>
+        </div>
+        <div class="result" id="cypherOutput" onclick="copyToClipboard(this)"></div>
+    </div>
+
+    <div class="card">
+        <div class="header">
+            <h1>Decrypt</h1>
+        </div>
+        <div class="input-group">
+            <div class="input-row">
+                <label>加密文本：</label>
+                <input type="text" id="decryptInput" value="U2FsdGVkX1/EC3+6P5dbbkZ3e1kQ5o2yzuU0NHTjmrKnLBEwreV489Kr0DIB+uBs" 
+                    placeholder="The string to decrypt">
+            </div>
+            <div class="input-row">
+                <label>密钥：</label>
+                <input type="text" id="decryptSecret" value="my secret key" placeholder="Your secret key">
+            </div>
+            <div class="input-row">
+                <label>加密算法：</label>
+                <select id="decryptAlgo">
+                    <option value="AES">AES</option>
+                    <option value="TripleDES">TripleDES</option>
+                    <option value="Rabbit">Rabbit</option>
+                    <option value="RC4">RC4</option>
+                </select>
+            </div>
+        </div>
+        <div id="decryptError" class="error" style="display: none;"></div>
+        <div class="result" id="decryptOutput" onclick="copyToClipboard(this)"></div>
+    </div>
+
+    <script>
+        const algos = {
+            AES: CryptoJS.AES,
+            TripleDES: CryptoJS.TripleDES,
+            Rabbit: CryptoJS.Rabbit,
+            RC4: CryptoJS.RC4
+        };
+
+        function updateCypher() {
+            const text = document.getElementById('cypherInput').value;
+            const secret = document.getElementById('cypherSecret').value;
+            const algo = document.getElementById('cypherAlgo').value;
+            const output = document.getElementById('cypherOutput');
+
+            try {
+                const encrypted = algos[algo].encrypt(text, secret).toString();
+                output.textContent = encrypted;
+                document.getElementById('decryptError').style.display = 'none';
+            } catch (error) {
+                output.textContent = 'Error encrypting text';
+                console.error('Encryption error:', error);
+            }
+        }
+
+        function updateDecrypt() {
+            const text = document.getElementById('decryptInput').value;
+            const secret = document.getElementById('decryptSecret').value;
+            const algo = document.getElementById('decryptAlgo').value;
+            const output = document.getElementById('decryptOutput');
+            const error = document.getElementById('decryptError');
+
+            try {
+                const decrypted = algos[algo].decrypt(text, secret).toString(CryptoJS.enc.Utf8);
+                output.textContent = decrypted;
+                error.style.display = 'none';
+            } catch (e) {
+                output.textContent = '';
+                error.textContent = 'Unable to decrypt your text';
+                error.style.display = 'block';
+            }
+        }
+
+        function copyToClipboard(element) {
+            const text = element.textContent;
+            if (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalBg = element.style.background;
+                    element.style.background = '#e6ffe6';
+                    setTimeout(() => {
+                        element.style.background = originalBg;
+                    }, 200);
+                });
+            }
+        }
+
+        // 添加事件监听
+        document.getElementById('cypherInput').addEventListener('input', updateCypher);
+        document.getElementById('cypherSecret').addEventListener('input', updateCypher);
+        document.getElementById('cypherAlgo').addEventListener('change', updateCypher);
+        document.getElementById('decryptInput').addEventListener('input', updateDecrypt);
+        document.getElementById('decryptSecret').addEventListener('input', updateDecrypt);
+        document.getElementById('decryptAlgo').addEventListener('change', updateDecrypt);
+
+        // 初始化
+        window.onload = function() {
+            updateCypher();
+            updateDecrypt();
+        };
+    </script>
+</body>
+
+</html> 

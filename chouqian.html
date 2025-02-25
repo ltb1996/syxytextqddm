@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>小组上台顺序抽签</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 30px;
+        }
+
+        #drawButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: background-color 0.3s;
+        }
+
+        #drawButton:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .group-item {
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .order-number {
+            background-color: #1890ff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .group-name {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>小组演示顺序抽签</h1>
+    <button id="drawButton">开始抽签</button>
+    <div id="result"></div>
+
+    <script>
+        const groups = ['第一组谢显欢', '第二组钟原', '第三组郭瑾涵', '第四组羊焘琪', '第五组马望轩', '第六组徐欣伟', '第七组刘镇宇'];
+        const drawButton = document.getElementById('drawButton');
+        const resultDiv = document.getElementById('result');
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function displayResults(shuffledGroups) {
+            resultDiv.innerHTML = '';
+            shuffledGroups.forEach((group, index) => {
+                const groupItem = document.createElement('div');
+                groupItem.className = 'group-item';
+                groupItem.innerHTML = `
+                    <div class="order-number">${index + 1}</div>
+                    <div class="group-name">${group}</div>
+                `;
+                resultDiv.appendChild(groupItem);
+            });
+        }
+
+        drawButton.addEventListener('click', () => {
+            // 清空之前的结果
+            resultDiv.innerHTML = '';
+            // 禁用按钮，防止重复点击
+            drawButton.disabled = true;
+            drawButton.textContent = '抽签中...';
+            
+            setTimeout(() => {
+                const shuffledGroups = shuffle([...groups]);
+                displayResults(shuffledGroups);
+                // 恢复按钮状态
+                drawButton.disabled = false;
+                drawButton.textContent = '开始抽签';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS3 3D 转换示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            perspective: 1000px; 
+            /* 设置透视效果 */
+        }
+        .box {
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            transition: transform 0.5s ease;
+        }
+        .translate3d {
+            background-color: red;
+        }
+        .translate3d:hover {
+            transform: translate3d(50px, 20px, -50px);
+        }
+        .rotate3d {
+            background-color: blue;
+        }
+        .rotate3d:hover {
+            transform: rotate3d(1, 1, 0, 45deg);
+        }
+        .scale3d {
+            background-color: green;
+        }
+        .scale3d:hover {
+            transform: scale3d(2, 1, 0.5);
+        }
+        .perspective {
+            background-color: yellow;
+            transform-style: preserve-3d; /* 保留3D转换效果 */
+        }
+        .perspective div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: orange;
+            transform: rotateX(45deg) rotateY(45deg);
+        }
+        .perspective:hover {
+            transform: rotateX(90deg) rotateY(90deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="box translate3d"></div>
+    <div class="box rotate3d"></div>
+    <div class="box scale3d"></div>
+    <div class="box perspective">
+        <div></div>
+    </div>
+</body>
+</html>

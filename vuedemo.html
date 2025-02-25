@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 计数器小Demo</title>
+  <!-- 引入Vue.js库 -->
+  <script src="https://cdn.staticfile.net/vue/2.2.2/vue.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    .counter {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: white;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="counter">
+    <h1>金融计数器</h1>
+    <p>${{ count }}</p>
+    <button @click="increment">+1</button>
+    <button @click="decrement">-1</button>
+  </div>
+  <script>
+    // 创建Vue实例
+    new Vue({
+      el: '#app',
+      data: {
+        count: 0
+      },
+      methods: {
+        increment() {
+          this.count++;
+        },
+        decrement() {
+          this.count--;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

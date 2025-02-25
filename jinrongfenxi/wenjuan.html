@@ -1,0 +1,594 @@
+<!--
+ * @Author: ltb1996 610030835@qq.com
+ * @Date: 2025-02-22 17:00:39
+ * @LastEditors: ltb1996 610030835@qq.com
+ * @LastEditTime: 2025-02-24 18:04:43
+ * @FilePath: \前端代码\jinrongfenxi\wenjuan.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资者风险识别与承受能力调查</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: url('../images/background_1.png') top center no-repeat;
+            background-color: #ebf3fd;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 80px auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .headerpart {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .headerpart img {
+            width: 80px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin: 10px 0;
+            font-weight: normal;
+        }
+
+        .header .wenjuan {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .notice {
+            color: #666;
+            font-size: 18px;
+            margin: 30px 0;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .section-title {
+            color: #4a90e2;
+            font-size: 16px;
+            margin: 40px 0 40px 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .required {
+            color: #ff4d4f;
+            margin-right: 5px;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: all 0.1s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: #2378ff;
+            box-shadow: 0 0 0 2px rgba(35,120,255,0.1);
+        }
+
+        .radio-option {
+            display: block;
+            margin-bottom: 12px;
+            background-color: #f5f5f5;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 0.5px solid #ddd;
+            font-size: 14px;
+            color: #333;
+            transform-origin: center;
+        }
+
+        .radio-option:hover {
+            background-color: #e6f7ff;
+            border-color: rgba(35,120,255,0.6);
+            transform: scale(1.005);
+        }
+
+        .radio-option input[type="radio"]:checked + span,
+        .radio-option input[type="radio"]:checked ~ span {
+            color: #2378ff;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            accent-color: #2378ff;
+        }
+
+        .radio-option input[type="radio"]:checked ~ .radio-custom {
+            border-color: #2378ff;
+        }
+
+        .radio-option input[type="radio"]:checked ~ * {
+            color: #2378ff;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            background-color: #2378ff;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            & + label,
+            & ~ label,
+            &:parent {
+                background-color: #e6f7ff;
+                border-color: #2378ff;
+                color: #2378ff;
+            }
+        }
+
+        .radio-option:has(input[type="radio"]:checked) {
+            background-color: #e6f7ff;
+            border-color: #2378ff;
+            color: #2378ff;
+        }
+
+        .radio-group {
+            margin-top: 10px;
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+            position: relative;
+            top: 1px;
+        }
+
+        .radio-custom,
+        input[type="radio"]:checked+.radio-custom::after {
+            display: none;
+        }
+
+        /* input[type="radio"] {
+            opacity: 1;
+            position: static;
+        } */
+
+        .submit-btn {
+            background-color: #2378ff;
+            color: white;
+            border: none;
+            padding: 12px 60px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #1b5cc5;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="headerpart">
+                <img src="../images/pic2.png" alt="三亚学院">
+                <h1>投资者风险识别与承受能力调查</h1>
+            </div>
+            <p class="wenjuan">问卷</p>
+            <p class="notice">温馨提示：根据中国证监会、中国基金业协会监管要求，私募基金应当向合格投资者募集，特设置本调查问卷，请您如实填写，感谢您的支持与配合。</p>
+        </div>
+
+        <div class="section-title"><strong>一、基本信息</strong></div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>01</strong> 您的姓名是？</label>
+            <input type="text" placeholder="请输入中文">
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>02</strong> 您的手机号是？</label>
+            <input type="tel" placeholder="请输入手机号码限大陆地区">
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>03</strong> 您的年龄介于？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="age" value="18-30">
+                    <span class="radio-custom"></span>
+                    A、18-30岁
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="age" value="31-50">
+                    <span class="radio-custom"></span>
+                    B、31-50岁
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="age" value="51-65">
+                    <span class="radio-custom"></span>
+                    C、51-65岁
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="age" value="65+">
+                    <span class="radio-custom"></span>
+                    D、高于65岁
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>04</strong> 您的学历？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="education" value="high-school">
+                    <span class="radio-custom"></span>
+                    A、高中及以下
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="education" value="college">
+                    <span class="radio-custom"></span>
+                    B、中专或大专
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="education" value="bachelor">
+                    <span class="radio-custom"></span>
+                    C、本科
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="education" value="master">
+                    <span class="radio-custom"></span>
+                    D、硕士及以上
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>05</strong> 您的职业为？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="occupation" value="fixed">
+                    <span class="radio-custom"></span>
+                    A、无固定职业
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="occupation" value="technical">
+                    <span class="radio-custom"></span>
+                    B、专业技术人员
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="occupation" value="general">
+                    <span class="radio-custom"></span>
+                    C、一般企事业单位员工
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="occupation" value="finance">
+                    <span class="radio-custom"></span>
+                    D、金融行业一般从业人员
+                </label>
+            </div>
+        </div>
+
+        <div class="section-title"><strong>二、财务状况</strong></div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>06</strong> 在您年年的家庭可支配收入中，可用于金融投资（储蓄存款除外）的比例为？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="investment-ratio" value="70-up">
+                    <span class="radio-custom"></span>
+                    A、70%以上
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-ratio" value="50-70">
+                    <span class="radio-custom"></span>
+                    B、50%-70%
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-ratio" value="30-50">
+                    <span class="radio-custom"></span>
+                    C、30% - 50%
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-ratio" value="10-30">
+                    <span class="radio-custom"></span>
+                    D、10% - 30%
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-ratio" value="below-10">
+                    <span class="radio-custom"></span>
+                    E、10%以下
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>07</strong> 您的家庭可支配年收入为（折合人民币）？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="annual-income" value="below-10w">
+                    <span class="radio-custom"></span>
+                    A、不超过10万元
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="annual-income" value="10-100w">
+                    <span class="radio-custom"></span>
+                    B、10万（含）-100万元
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="annual-income" value="100-500w">
+                    <span class="radio-custom"></span>
+                    C、100万（含）-500万元
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="annual-income" value="500-1000w">
+                    <span class="radio-custom"></span>
+                    D、500万元（含）-1000万元
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="annual-income" value="1000w-up">
+                    <span class="radio-custom"></span>
+                    E、1000万元以上
+                </label>
+            </div>
+        </div>
+
+        <div class="section-title"><strong>三、投资知识</strong></div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>08</strong> 您的证券投资知识可描述为？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="investment-knowledge" value="limited">
+                    <span class="radio-custom"></span>
+                    A、有限：基本没有金融产品方面的知识
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-knowledge" value="basic">
+                    <span class="radio-custom"></span>
+                    B、一般：对金融产品及其相关风险具有基本的知识和理解
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-knowledge" value="rich">
+                    <span class="radio-custom"></span>
+                    C、丰富：对金融产品及其相关风险具有丰富的知识和理解
+                </label>
+            </div>
+        </div>
+
+        <div class="section-title"><strong>四、投资经验</strong></div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>09</strong> 您的证券投资经验可描述为？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="investment-experience" value="none">
+                    <span class="radio-custom"></span>
+                    A、除银行储蓄外，基本没有其他投资经验
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-experience" value="basic">
+                    <span class="radio-custom"></span>
+                    B、购买过债券、保险等理财产品
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-experience" value="stocks">
+                    <span class="radio-custom"></span>
+                    C、参与过股票、基金等产品的交易
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-experience" value="advanced">
+                    <span class="radio-custom"></span>
+                    D、参与过权证、期货、期权等产品的交易
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>10</strong> 您有多少年投资基金、股票、信托、私募证券或金融衍生产品等风险投资品的经验？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="investment-years" value="none">
+                    <span class="radio-custom"></span>
+                    A、没有经验
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-years" value="0-2">
+                    <span class="radio-custom"></span>
+                    B、2年以内
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-years" value="2-5">
+                    <span class="radio-custom"></span>
+                    C、2-5年
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-years" value="5-10">
+                    <span class="radio-custom"></span>
+                    D、5-10年
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-years" value="10+">
+                    <span class="radio-custom"></span>
+                    E、10年以上
+                </label>
+            </div>
+        </div>
+
+        <div class="section-title"><strong>五、投资目标</strong></div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>11</strong> 您计划的投资期限是多久？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="investment-period" value="short">
+                    <span class="radio-custom"></span>
+                    A、短期——0到1年
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-period" value="medium">
+                    <span class="radio-custom"></span>
+                    B、中期——1到3年
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-period" value="medium-long">
+                    <span class="radio-custom"></span>
+                    C、中长期——3到5年
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-period" value="long">
+                    <span class="radio-custom"></span>
+                    D、长期——5年以上
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>12</strong> 您的投资目的是？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="investment-purpose" value="preserve">
+                    <span class="radio-custom"></span>
+                    A、资产保值
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-purpose" value="stable-growth">
+                    <span class="radio-custom"></span>
+                    B、资产稳健增长
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-purpose" value="rapid-growth">
+                    <span class="radio-custom"></span>
+                    C、资产迅速增长
+                </label>
+            </div>
+        </div>
+
+        <div class="section-title"><strong>六、风险偏好</strong></div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>13</strong> 以下哪项描述最符合您的投资态度？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="risk-attitude" value="very-conservative">
+                    <span class="radio-custom"></span>
+                    A、厌恶风险，不希望本金损失，希望获得稳定回报
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="risk-attitude" value="conservative">
+                    <span class="radio-custom"></span>
+                    B、保守投资，不希望本金损失，愿意承担一定幅度的收益波动
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="risk-attitude" value="balanced">
+                    <span class="radio-custom"></span>
+                    C、寻求资金的较高收益和成长性，愿意为此承担相应的本金损失
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="risk-attitude" value="aggressive">
+                    <span class="radio-custom"></span>
+                    D、希望赚取高回报，愿意为此承担较大本金损失
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>14</strong> 假设有两种投资：投资A预期获得5%的收益，可能承担的损失非常小；投资B预期获得20%的收益，但可能承担较大亏损。您会怎么支配您的投资：</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="investment-choice" value="all-a">
+                    <span class="radio-custom"></span>
+                    A、全部投资于收益较小且风险较小的A
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-choice" value="mostly-a">
+                    <span class="radio-custom"></span>
+                    B、同时投资于A和B，但大部分资金投资于收益较小且风险较小的A
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-choice" value="mostly-b">
+                    <span class="radio-custom"></span>
+                    C、同时投资于A和B，但大部分资金投资于收益较大且风险较大的B
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="investment-choice" value="all-b">
+                    <span class="radio-custom"></span>
+                    D、全部投资于收益较大且风险较大的B
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label><span class="required">*</span><strong>15</strong> 您认为自己能承受的最大投资损失是多少？</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="max-loss" value="below-10">
+                    <span class="radio-custom"></span>
+                    A、10%以内
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="max-loss" value="10-30">
+                    <span class="radio-custom"></span>
+                    B、10%-30%
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="max-loss" value="30-50">
+                    <span class="radio-custom"></span>
+                    C、30%-50%
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="max-loss" value="above-50">
+                    <span class="radio-custom"></span>
+                    D、超过50%
+                </label>
+            </div>
+        </div>
+
+        <div class="notice" style="font-size: 14px; color: #666; margin: 30px 0;">
+            注：1. 投资者应确认在进行问卷调查时，所填写的选项真实有效。2. 调查问卷为帮导公司了解投资者风险认知水平和风险承受能力提供参考，本次调查在任何方面均不构成对投资者的投资建议，或对投资者的投资决策形成 实质影响，若投资者根据调查结果进行投资，完全属于投资者的独立行为，相应的风险亦由投资者独立承担。
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <button class="submit-btn">提交</button>
+        </div>
+    </div>
+</body>
+
+</html>

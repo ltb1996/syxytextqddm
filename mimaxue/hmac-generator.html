@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMAC Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        .nav-bar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #f8f9fa;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+        
+        .nav-content .title {
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .nav-content .logo {
+            height: 40px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            padding-top: 80px;
+            overflow-y: scroll;
+        }
+
+        .card {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .header .description {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .result {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+            cursor: pointer;
+            word-break: break-all;
+            min-height: 20px;
+            box-sizing: border-box;
+        }
+
+        button {
+            display: block;
+            margin: 15px auto;
+            padding: 8px 16px;
+            background: #f3f3f3;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e6e6e6;
+        }
+
+        .select-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .select-group select {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-bar">
+        <div class="nav-content">
+            <div class="title">三亚学院盛宝金融科技商学院-------区块链工程-------IT-tools</div>
+            <img src="../images/logo3.png" alt="SAXO FINTECH" class="logo">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="header">
+            <h1>HMAC Generator</h1>
+            <p class="description">使用密钥生成消息认证码(HMAC)</p>
+        </div>
+
+        <div class="input-group">
+            <label>输入文本：</label>
+            <textarea id="plainText" placeholder="Plain text to compute the hash..." autofocus>hello</textarea>
+        </div>
+
+        <div class="input-group">
+            <label>密钥：</label>
+            <input type="text" id="secret" value="key" placeholder="Enter the secret key...">
+        </div>
+
+        <div class="select-group">
+            <select id="hashFunction">
+                <option value="SHA256" selected>SHA256</option>
+                <option value="MD5">MD5</option>
+                <option value="RIPEMD160">RIPEMD160</option>
+                <option value="SHA1">SHA1</option>
+                <option value="SHA3">SHA3</option>
+                <option value="SHA224">SHA224</option>
+                <option value="SHA384">SHA384</option>
+                <option value="SHA512">SHA512</option>
+            </select>
+
+            <select id="encoding">
+                <option value="Hex" selected>Hexadecimal (base 16)</option>
+                <option value="Bin">Binary (base 2)</option>
+                <option value="Base64">Base64 (base 64)</option>
+                <option value="Base64url">Base64-url (base 64 with url safe chars)</option>
+            </select>
+        </div>
+
+        <div class="result" id="hmacResult" onclick="copyToClipboard(this)"></div>
+        <button onclick="copyToClipboard(document.getElementById('hmacResult'))">Copy HMAC</button>
+    </div>
+
+    <script>
+        function convertHexToBin(hex) {
+            return hex
+                .trim()
+                .split('')
+                .map(byte => Number.parseInt(byte, 16).toString(2).padStart(4, '0'))
+                .join('');
+        }
+
+        function formatWithEncoding(words, encoding) {
+            if (encoding === 'Bin') {
+                return convertHexToBin(words.toString(CryptoJS.enc.Hex));
+            }
+            return words.toString(CryptoJS.enc[encoding]);
+        }
+
+        const algos = {
+            MD5: CryptoJS.HmacMD5,
+            RIPEMD160: CryptoJS.HmacRIPEMD160,
+            SHA1: CryptoJS.HmacSHA1,
+            SHA3: CryptoJS.HmacSHA3,
+            SHA224: CryptoJS.HmacSHA224,
+            SHA256: CryptoJS.HmacSHA256,
+            SHA384: CryptoJS.HmacSHA384,
+            SHA512: CryptoJS.HmacSHA512
+        };
+
+        function updateHmac() {
+            const text = document.getElementById('plainText').value;
+            const secret = document.getElementById('secret').value;
+            const hashFunction = document.getElementById('hashFunction').value;
+            const encoding = document.getElementById('encoding').value;
+            const resultDiv = document.getElementById('hmacResult');
+
+            if (text && secret) {
+                const hmac = formatWithEncoding(algos[hashFunction](text, secret), encoding);
+                resultDiv.textContent = hmac;
+            } else {
+                resultDiv.textContent = '';
+            }
+        }
+
+        function copyToClipboard(element) {
+            const text = element.textContent;
+            if (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalBg = element.style.background;
+                    element.style.background = '#e6ffe6';
+                    setTimeout(() => {
+                        element.style.background = originalBg;
+                    }, 200);
+                });
+            }
+        }
+
+        // 添加事件监听
+        document.getElementById('plainText').addEventListener('input', updateHmac);
+        document.getElementById('secret').addEventListener('input', updateHmac);
+        document.getElementById('hashFunction').addEventListener('change', updateHmac);
+        document.getElementById('encoding').addEventListener('change', updateHmac);
+        
+        // 页面加载完成后初始化
+        window.onload = function() {
+            updateHmac();  // 生成初始HMAC值
+        };
+    </script>
+</body>
+
+</html> 

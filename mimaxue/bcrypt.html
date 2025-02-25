@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bcrypt</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+    <style>
+        .nav-bar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #f8f9fa;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+        
+        .nav-content .title {
+            font-size: 20px;
+            color: #666;
+        }
+        
+        .nav-content .logo {
+            height: 40px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            padding-top: 80px;
+            overflow-y: scroll;
+        }
+
+        .card {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .header .description {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+            color: #666;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .input-group input[type="number"] {
+            width: 200px;
+            flex: none;
+        }
+
+        .input-group .number-controls {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .input-group .number-controls button {
+            margin: 0;
+            padding: 4px 8px;
+            background: #f3f3f3;
+            color: #666;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .input-group .number-controls button:hover {
+            background: #e6e6e6;
+        }
+
+        .result {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+            cursor: pointer;
+            word-break: break-all;
+            min-height: 20px;
+        }
+
+        button {
+            display: block;
+            margin: 15px auto;
+            padding: 8px 16px;
+            background: #f3f3f3;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e6e6e6;
+        }
+
+        .compare-result {
+            display: inline-block;
+            margin-left: 10px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .compare-result.positive {
+            color: #18a058;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-bar">
+        <div class="nav-content">
+            <div class="title">三亚学院盛宝金融科技商学院-------区块链工程-------IT-tools</div>
+            <img src="../images/logo3.png" alt="SAXO FINTECH" class="logo">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="header">
+            <h1>加密</h1>
+            <p class="description">使用bcrypt对文本字符串进行加密。Bcrypt是一个基于Blowfish密码的密码哈希函数。</p>
+        </div>
+
+        <div class="input-group">
+            <label>输入文本：</label>
+            <input type="text" id="input" placeholder="Your string to bcrypt...">
+        </div>
+
+        <div class="input-group">
+            <label>加密轮数：</label>
+            <input type="number" id="saltCount" value="10" min="0" max="100" style="text-align: center;">
+            <div class="number-controls">
+                <button onclick="adjustSalt(-1)">-</button>
+                <button onclick="adjustSalt(1)">+</button>
+            </div>
+        </div>
+
+        <div class="result" id="hashedResult" onclick="copyToClipboard(this)"></div>
+
+        <button onclick="copyHash()">Copy hash</button>
+    </div>
+
+    <div class="card">
+        <div class="header">
+            <h1>哈希值比较</h1>
+        </div>
+
+        <div class="input-group">
+            <label>输入文本：</label>
+            <input type="text" id="compareString" placeholder="Your string to compare...">
+        </div>
+
+        <div class="input-group">
+            <label>哈希值：</label>
+            <input type="text" id="compareHash" placeholder="Your hash to compare...">
+        </div>
+
+        <div class="input-group">
+            <label>是否匹配？</label>
+            <div id="compareResult" class="compare-result">No</div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后开始初始化
+        window.onload = function() {
+            initializePage();
+        };
+
+        function initializePage() {
+            // 添加事件监听器
+            document.getElementById('input').addEventListener('input', updateHash);
+            document.getElementById('saltCount').addEventListener('input', updateHash);
+            document.getElementById('compareString').addEventListener('input', updateCompare);
+            document.getElementById('compareHash').addEventListener('input', updateCompare);
+        }
+
+        function updateHash() {
+            const text = document.getElementById('input').value;
+            const saltCount = parseInt(document.getElementById('saltCount').value);
+            const hashedResult = document.getElementById('hashedResult');
+            
+            if (text) {
+                try {
+                    const salt = dcodeIO.bcrypt.genSaltSync(saltCount);
+                    const hash = dcodeIO.bcrypt.hashSync(text, salt);
+                    hashedResult.textContent = hash;
+                } catch (error) {
+                    console.error('Error generating hash:', error);
+                    hashedResult.textContent = 'Error generating hash';
+                }
+            } else {
+                hashedResult.textContent = '';
+            }
+        }
+
+        function updateCompare() {
+            const string = document.getElementById('compareString').value;
+            const hash = document.getElementById('compareHash').value;
+            const result = document.getElementById('compareResult');
+
+            if (string && hash) {
+                const matches = dcodeIO.bcrypt.compareSync(string, hash);
+                result.textContent = matches ? 'Yes' : 'No';
+                result.className = 'compare-result' + (matches ? ' positive' : '');
+            } else {
+                result.textContent = 'No';
+                result.className = 'compare-result';
+            }
+        }
+
+        function copyToClipboard(element) {
+            const text = element.textContent;
+            if (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalBg = element.style.background;
+                    element.style.background = '#e6ffe6';
+                    setTimeout(() => {
+                        element.style.background = originalBg;
+                    }, 200);
+                });
+            }
+        }
+
+        function copyHash() {
+            const element = document.getElementById('hashedResult');
+            copyToClipboard(element);
+        }
+
+        function adjustSalt(delta) {
+            const input = document.getElementById('saltCount');
+            const newValue = Number(input.value) + delta;
+            if (newValue >= 0 && newValue <= 100) {
+                input.value = newValue;
+                updateHash();
+            }
+        }
+    </script>
+</body>
+
+</html> 

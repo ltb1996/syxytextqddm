@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Election Results</title>
+
+    <!-- Bootstrap -->
+    <link href="./bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container" style="width: 650px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center">Election Results</h1>
+                <hr />
+                <br />
+                <!-- <div id="loader">
+                    <p class="text-center">Loading...</p>
+                </div> -->
+                <div id="content">
+                    <!-- <div id="content" style="display: none;"> -->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidatesResults">
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Trump</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Harris</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr />
+                    <form onSubmit="return castVote()">
+                        <div class="form-group">
+                            <label for="candidatesSelect">Select Candidate</label>
+                            <select class="form-control" id="candidatesSelect">
+                                <option value="1">Trump</option>
+                                <option value="2">Harris</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Vote</button>
+                        <hr />
+                    </form>
+                    <p id="accountAddress" class="text-center"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加投票功能的脚本 -->
+    <script>
+        // 初始化票数对象
+        let votes = {
+            1: 0,  // Trump的票数
+            2: 0   // Harris的票数
+        };
+        // 投票功能
+        function castVote() {
+            // 获取选中的候选人ID
+            const selectedId = document.getElementById('candidatesSelect').value;
+            // 增加选中候选人的票数
+            votes[selectedId]++;
+            // 更新显示的票数
+            const row = document.querySelector(`tr:nth-child(${selectedId}) td:last-child`);
+            row.textContent = votes[selectedId];
+            return false;
+        }
+    </script>
+</body>
+
+</html>
