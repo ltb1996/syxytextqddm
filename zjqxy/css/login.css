@@ -1,0 +1,191 @@
+body {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+#v1 {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  /* min-height: 100%; */
+  width: auto;
+  height: auto;
+  z-index: -9999;
+  /* height: 520px; */
+}
+.xtx-login-header {
+  width: 561px;
+  height: 132px;
+  margin: 80px auto 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.xtx-login-header .logo {
+  width: 500px;  /* 调整宽度 */
+  height: 120px;  /* 调整高度 */
+  float: left;
+  background: url("../images/sbxybailogo.png") center center no-repeat;
+  background-size: contain;  /* 确保图片完整显示并适应容器大小 */
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.xtx-login-header .home {
+  float: right;
+  width: 150px;
+  font-size: 30px;
+  padding-right: 24px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.xtx-login-main {
+  height: 488px;
+  margin-top: 30px;
+}
+
+.xtx-login-main .wrapper {
+  width: 561px;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.xtx-login-main .wrapper .box {
+  width: 380px;
+  box-shadow: 0px 0px 25px 0px rgba(3, 3, 3, 0.14);
+  position: absolute;
+  top: 2px;
+  right: 100px;
+  background: #fff;
+  padding: 20px 40px;
+}
+
+.xtx-login-main .wrapper .box .tab-nav {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.xtx-login-main .wrapper .box .tab-nav::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 1px;
+  height: 20px;
+  background: #ededed;
+}
+
+.xtx-login-main .wrapper .box .tab-nav a {
+  font-size: 18px;
+  height: 35px;
+  line-height: 35px;
+}
+
+.xtx-login-main .wrapper .box .tab-nav a.active {
+  border-bottom: 2px solid #004191;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .code {
+  display: block;
+  margin: 44px auto;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .link {
+  text-align: right;
+  padding-top: 12px;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .link a {
+  color: #004191;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .input {
+  border: 1px solid #004191;
+  width: 100%;
+  height: 36px;
+  margin-top: 17px;
+  display: flex;
+  background: #cfcdcd;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .input .iconfont {
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  text-align: center;
+  line-height: 34px;
+  font-size: 20px;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .input input {
+  flex: 1;
+  padding-left: 15px;
+  background: #fff;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .input input::placeholder {
+  color: #b3b3b3 !important;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .agree {
+  color: #b3b3b3;
+  padding: 17px 0;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .agree a {
+  color: #0673b1;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .agree > label input {
+  /* display: none; */
+}
+
+.xtx-login-main .wrapper .box .tab-pane .agree > label input:checked + span {
+  color: #004191;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .button {
+  margin-bottom: 15px;
+}
+
+.xtx-login-main .wrapper .box .tab-pane .button .dl {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background: #004191; 
+  color: #fff;
+  display: block;
+  font-size: 16px;
+  margin-bottom: 17px;
+  cursor: pointer;
+}
+
+.xtx-login-footer .copyright {
+  height: 115px;
+  /* padding-top: 40px; */
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+}
+
+.xtx-login-footer .copyright p {
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.xtx-login-footer .copyright a {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+  padding: 0 10px 0 6px;
+  border-right: 1px solid #999;
+}
+
+.xtx-login-footer .copyright a:last-child {
+  border-right: none;
+}
