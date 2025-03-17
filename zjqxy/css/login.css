@@ -28,7 +28,7 @@ body {
   width: 600px;  /* 调整宽度 */
   height: 100px;  /* 调整高度 */
   float: left;
-  background: url("../images/syxyheilogo.png") center center no-repeat;
+  background: url("../images/syxybailogo.png") center center no-repeat;
   background-size: contain;  /* 确保图片完整显示并适应容器大小 */
   margin-right: 10px;
   margin-bottom: 5px;
