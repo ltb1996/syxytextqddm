@@ -586,10 +586,14 @@
 
             // 创建并下载JSON文件
             const formattedData = {};
+            let counter = 1; // 初始化序号计数器
             for (let key in formData) {
-                formattedData[key] = {
+                // 为每个键添加序号
+                const numberedKey = `${counter}、${key}`; 
+                formattedData[numberedKey] = {
                     "您的选项是": formData[key]
                 };
+                counter++; // 序号递增
             }
             
             const jsonString = JSON.stringify(formattedData, null, 2);
