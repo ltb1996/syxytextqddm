@@ -1,0 +1,145 @@
+body {
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+    background: url('../images/background_1.png') top center no-repeat;
+    background-color: #ebf3fd;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 920px;
+    margin: 80px auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.headerpart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headerpart img {
+    width: 80px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.header h1 {
+    font-size: 36px;
+    margin: 10px 0;
+    font-weight: normal;
+}
+
+.header .wenjuan {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.notice {
+    color: #666;
+    font-size: 18px;
+    margin: 30px 0;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.section-title {
+    color: #4a90e2;
+    font-size: 16px;
+    margin: 40px 0 40px 0;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.required {
+    color: #ff4d4f;
+    margin-right: 5px;
+}
+
+input[type="text"],
+input[type="tel"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: all 0.1s ease;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus {
+    outline: none;
+    border-color: #2378ff;
+    box-shadow: 0 0 0 2px rgba(35, 120, 255, 0.1);
+}
+
+.radio-option {
+    display: block;
+    margin-bottom: 12px;
+    background-color: #f5f5f5;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border: 0.5px solid #ddd;
+    font-size: 14px;
+    color: #333;
+    transform-origin: center;
+}
+
+.radio-option:hover {
+    background-color: #e6f7ff;
+    border-color: rgba(35, 120, 255, 0.6);
+    transform: scale(1.005);
+}
+
+.radio-option:has(input[type="radio"]:checked) {
+    background-color: #e6f7ff;
+    border-color: #2378ff;
+    color: #2378ff;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+    position: relative;
+    top: 1px;
+    accent-color: #2378ff;
+}
+
+.submit-btn {
+    background-color: #2378ff;
+    color: white;
+    border: none;
+    padding: 12px 60px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #1b5cc5;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
