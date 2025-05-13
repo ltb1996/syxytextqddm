@@ -9,7 +9,8 @@
     <style>
         html {
             overflow-y: scroll;
-            min-height: 101%;  /* 强制显示滚动条 */
+            min-height: 101%;
+            /* 强制显示滚动条 */
         }
 
         .header {
@@ -39,7 +40,7 @@
             border-bottom: 1px solid #eee;
             z-index: 1000;
         }
-        
+
         .nav-content {
             margin: 0 auto;
             display: flex;
@@ -47,12 +48,12 @@
             align-items: center;
             padding: 0 40px;
         }
-        
+
         .nav-content .title {
             font-size: 20px;
             color: #666;
         }
-        
+
         .nav-content .logo {
             height: 40px;
         }
@@ -61,13 +62,15 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            padding-top: 80px;  /* 为固定导航栏留出空间 */
+            padding-top: 80px;
+            /* 为固定导航栏留出空间 */
         }
 
         .card {
             max-width: 800px;
             margin: 20px auto;
-            margin-bottom: 200px;  /* 添加底部空间 */
+            margin-bottom: 200px;
+            /* 添加底部空间 */
             background: white;
             border-radius: 8px;
             padding: 20px;
@@ -126,7 +129,7 @@
             .hash-label {
                 flex: 0 0 80px;
             }
-            
+
             .hash-value {
                 font-size: 14px;
             }
@@ -161,62 +164,109 @@
     </div>
 
     <script>
+        // 将十六进制字符串转换为二进制字符串
         function convertHexToBin(hex) {
-            return hex
-                .trim()
-                .split('')
-                .map(byte => Number.parseInt(byte, 16).toString(2).padStart(4, '0'))
-                .join('');
-        }
-
-        function formatWithEncoding(words, encoding) {
-            if (encoding === 'Bin') {
-                return convertHexToBin(words.toString(CryptoJS.enc.Hex));
+            // 去除空格
+            const cleanHex = hex.trim();
+            // 存储结果
+            let result = "";
+            // 遍历每个字符
+            for (let i = 0; i < cleanHex.length; i++) {
+                // 获取单个十六进制字符
+                const hexChar = cleanHex[i];
+                // 转换为十进制数字
+                const decimal = parseInt(hexChar, 16);
+                // 转换为二进制字符串
+                let binary = decimal.toString(2);
+                // 补齐4位（因为1个十六进制字符=4位二进制）
+                while (binary.length < 4) {
+                    binary = "0" + binary;
+                }
+                // 添加到结果中
+                result = result + binary;
             }
+            return result;
+        }
+        // 根据选择的编码格式化哈希结果
+        function formatWithEncoding(words, encoding) {
+            // 如果是二进制编码
+            if (encoding === 'Bin') {
+                // 先转为十六进制，再转为二进制
+                const hex = words.toString(CryptoJS.enc.Hex);
+                return convertHexToBin(hex);
+            }
+            // 使用CryptoJS的编码器直接转换
             return words.toString(CryptoJS.enc[encoding]);
         }
-
-        const algos = {
-            MD5: CryptoJS.MD5,
-            SHA1: CryptoJS.SHA1,
-            SHA256: CryptoJS.SHA256,
-            SHA224: CryptoJS.SHA224,
-            SHA512: CryptoJS.SHA512,
-            SHA384: CryptoJS.SHA384,
-            SHA3: CryptoJS.SHA3,
-            RIPEMD160: CryptoJS.RIPEMD160
-        };
-
+        // 定义支持的哈希算法
+        const algos = {};
+        algos.MD5 = CryptoJS.MD5;
+        algos.SHA1 = CryptoJS.SHA1;
+        algos.SHA256 = CryptoJS.SHA256;
+        algos.SHA224 = CryptoJS.SHA224;
+        algos.SHA512 = CryptoJS.SHA512;
+        algos.SHA384 = CryptoJS.SHA384;
+        algos.SHA3 = CryptoJS.SHA3;
+        algos.RIPEMD160 = CryptoJS.RIPEMD160;
+        // 更新页面上显示的所有哈希值
         function updateHashes() {
+            // 获取输入的明文
             const text = document.getElementById('clearText').value;
+            // 获取选择的编码方式
             const encoding = document.getElementById('encoding').value;
+            // 获取结果显示区域
             const resultsDiv = document.getElementById('hashResults');
+            // 清空原有结果
             resultsDiv.innerHTML = '';
+            // 遍历所有支持的哈希算法
+            for (const name in algos) {
+                if (algos.hasOwnProperty(name)) {
+                    // 获取算法函数
+                    const algo = algos[name];
+                    // 计算哈希值并格式化
+                    const hash = formatWithEncoding(algo(text), encoding);
 
-            Object.entries(algos).forEach(([name, algo]) => {
-                const hash = formatWithEncoding(algo(text), encoding);
-                const div = document.createElement('div');
-                div.className = 'hash-group';
-                div.innerHTML = `
-                    <div class="hash-label">${name}</div>
-                    <div class="hash-value" onclick="copyToClipboard(this)">${hash}</div>
-                `;
-                resultsDiv.appendChild(div);
-            });
+                    // 创建一个新的div元素
+                    const div = document.createElement('div');
+                    // 设置CSS类名
+                    div.className = 'hash-group';
+                    // 设置HTML内容
+                    div.innerHTML =
+                        '<div class="hash-label">' + name + '</div>' +
+                        '<div class="hash-value" onclick="copyToClipboard(this)">' + hash + '</div>';
+
+                    // 将新元素添加到结果区域
+                    resultsDiv.appendChild(div);
+                }
+            }
         }
-
+        
+        // 将文本复制到剪贴板并显示视觉反馈
         function copyToClipboard(element) {
+            // 获取元素中的文本
             const text = element.textContent;
-            navigator.clipboard.writeText(text).then(() => {
+            // 使用剪贴板API复制文本
+            navigator.clipboard.writeText(text).then(function () {
+                // 保存原始背景色
                 const originalBg = element.style.background;
+                // 设置为浅绿色表示复制成功
                 element.style.background = '#e6ffe6';
-                setTimeout(() => {
+                
+                // 使用alert显示成功消息
+                alert('复制成功！');
+
+                // 200毫秒后恢复原始背景色
+                setTimeout(function () {
                     element.style.background = originalBg;
                 }, 200);
+            }).catch(function(err) {
+                // 复制失败时显示错误提示
+                alert('复制失败: ' + err);
             });
         }
-
+        // 为输入框添加输入事件监听器
         document.getElementById('clearText').addEventListener('input', updateHashes);
+        // 为编码选择框添加变化事件监听器
         document.getElementById('encoding').addEventListener('change', updateHashes);
     </script>
 </body>
